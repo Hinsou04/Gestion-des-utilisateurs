@@ -5,39 +5,32 @@ import Repository.UserRepository;
 
 import java.util.List;
 
-// Implemention de l'interface UserService
-public class UserServiceImplemente implements UserService{
+public class UserServiceImplemente implements UserService {
 
-    // Attribut
-    private final UserRepository userRepository;
+    private UserRepository repository;
 
-    // Constructeur
-    public UserServiceImplemente(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public UserServiceImplemente(UserRepository repository) {
+        this.repository = repository;
     }
 
-    // Ajouter
-    public User addUser(User user) {
-        return userRepository.save(user);
+    @Override
+    public void addUser(User user) {
+        repository.save(user);
     }
 
-    // Recuperer
-    public User getUser(long id) {
-        return userRepository.getUser(id);
+    @Override
+    public User getUser(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
     }
 
-    // Lister
+    @Override
     public List<User> getAllUsers() {
-        return userRepository.getAllUsers();
+        return repository.findAll();
     }
 
-    // Supprimer
-    public void deleteUser(long id) {
-        userRepository.delete(id);
-
-    }
-    // Modifier l'utilsateur
-    public User updateUser(long id, User user) {
-        return userRepository.updtateUser(id,user);
+    @Override
+    public void deleteUser(Long id) {
+        repository.delete(id);
     }
 }

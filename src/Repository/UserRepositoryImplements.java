@@ -1,51 +1,34 @@
 package Repository;
 
 import Model.User;
+import java.util.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+public class UserRepositoryImplements implements UserRepository {
 
-// implementation de Userrepository
-public class UserRepositoryImplements implements UserRepository{
+    // Base de donnee fictive
+    private Map<Long, User> database = new HashMap<>();
 
-    private Map<Long,User> baseDonne = new HashMap<>();
-
-    // Enregistrer l'utilisateur
-    public User save(User user) {
-        baseDonne.put(user.getId(), user);
-        return user;
+    @Override
+    // Sauvegarder l'utilisateur
+    public void save(User user) {
+        database.put(user.getId(), user);
     }
 
+    @Override
+    // rechercher un utilisateur par son id
     public Optional<User> findById(Long id) {
-        return Optional.empty();
+        return Optional.ofNullable(database.get(id));
     }
 
-    // Lister l'utilisateur
+    @Override
+    // Afficher l'utilisateur
     public List<User> findAll() {
-        return baseDonne.values().stream().toList();
+        return new ArrayList<>(database.values());
     }
 
+    @Override
     // Supprimer l'utilisateur
     public void delete(Long id) {
-        baseDonne.remove(id);}
-
-    // Recuperer l'utilisateur
-    public User getUser(long id) {
-        return (User) baseDonne.values().stream().toList();
+        database.remove(id);
     }
-
-    // Modifier l'utilisateur
-    public User updtateUser(long id, User user) {
-        if(baseDonne.containsKey(id)){
-            baseDonne.put(id,user);
-        }
-        return user;
-    }
-
-    public List<User> getAllUsers() {
-        return baseDonne.values().stream().toList();
-    }
-
 }
